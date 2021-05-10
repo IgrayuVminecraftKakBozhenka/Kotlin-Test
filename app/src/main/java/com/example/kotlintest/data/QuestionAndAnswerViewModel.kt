@@ -6,8 +6,8 @@ import androidx.lifecycle.LiveData
 
 class QuestionAndAnswerViewModel(application: Application): AndroidViewModel(application) {
 
-    private val readAllQuestionData: LiveData<List<QuestionModel>>
-    private val readAllAnswerData: LiveData<List<AnswersModel>>
+    private val readAllQuestionData: List<QuestionModel>
+    private val readAllAnswerData: List<AnswersModel>
     private val repository: QuestionAndAnswerRepository
 
     init {

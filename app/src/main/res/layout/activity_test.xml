@@ -9,18 +9,70 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        tools:layout_editor_absoluteX="90dp"
-        tools:layout_editor_absoluteY="60dp">
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp"
+        android:background="@color/white">
 
-        <fragment
-            android:id="@+id/fragment"
-            android:name="com.example.kotlintest.QuestionFragment"
+        <TextView
+            android:id="@+id/question_fragment_question"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="70sp"
+            android:fontFamily="sans-serif-light"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            tools:text="Why are u running?" />
+
+        <RadioGroup
+            android:id="@+id/question_fragment_radio_button_group"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:layout_editor_absoluteX="47dp"
-            tools:layout_editor_absoluteY="115dp" />
+            android:layout_height="213dp">
 
+            <RadioButton
+                android:id="@+id/question_fragment_radio_first_answer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5sp"
+                android:textSize="20sp"
+                tools:text="answer one" />
+
+            <RadioButton
+                android:id="@+id/question_fragment_radio_second_answer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5sp"
+                android:textSize="20sp"
+                tools:text="answer two" />
+
+            <RadioButton
+                android:id="@+id/question_fragment_radio_third_answer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5sp"
+                android:textSize="20sp"
+                tools:text="answer three" />
+
+            <RadioButton
+                android:id="@+id/question_fragment_radio_four_answer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5sp"
+                android:textSize="20sp"
+                tools:text="answer four" />
+
+
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/question_fragment_button_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="15sp"
+            android:background="@drawable/circle_button"
+            android:text="@string/next_button" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,8 +15,8 @@ interface QuestionAndAnswerDao {
     suspend fun addAnswer(answer: AnswersModel)
 
     @Query("SELECT * FROM questions")
-    fun readAllQuestionData(): LiveData<List<QuestionModel>>
+    fun readAllQuestionData(): List<QuestionModel>
 
     @Query("SELECT * FROM answers")
-    fun readAllAnswerData(): LiveData<List<AnswersModel>>
+    fun readAllAnswerData(): List<AnswersModel>
 }
