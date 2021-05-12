@@ -36,6 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5sp"
                 android:textSize="20sp"
+                android:textColor="@color/black"
                 tools:text="answer one" />
 
             <RadioButton
@@ -44,6 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5sp"
                 android:textSize="20sp"
+                android:textColor="@color/black"
                 tools:text="answer two" />
 
             <RadioButton
@@ -52,6 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5sp"
                 android:textSize="20sp"
+                android:textColor="@color/black"
                 tools:text="answer three" />
 
             <RadioButton
@@ -60,6 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5sp"
                 android:textSize="20sp"
+                android:textColor="@color/black"
                 tools:text="answer four" />
 
 
