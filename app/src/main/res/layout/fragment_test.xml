@@ -28,11 +28,11 @@
         <RadioGroup
             android:id="@+id/question_fragment_radio_button_group"
             android:layout_width="match_parent"
-            android:layout_height="213dp">
+            android:layout_height="wrap_content">
 
             <RadioButton
                 android:id="@+id/question_fragment_radio_first_answer"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5sp"
                 android:textSize="20sp"
@@ -41,7 +41,7 @@
 
             <RadioButton
                 android:id="@+id/question_fragment_radio_second_answer"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5sp"
                 android:textSize="20sp"
@@ -50,7 +50,7 @@
 
             <RadioButton
                 android:id="@+id/question_fragment_radio_third_answer"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5sp"
                 android:textSize="20sp"
@@ -59,7 +59,7 @@
 
             <RadioButton
                 android:id="@+id/question_fragment_radio_four_answer"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5sp"
                 android:textSize="20sp"
