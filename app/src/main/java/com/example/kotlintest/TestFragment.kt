@@ -45,7 +45,6 @@ class TestFragment() : Fragment() {
 
         getQuestionFromDb(question)
 
-
         nextButton.setOnClickListener {
             if (questionIndex < questions.size) {
                 question.text = questions[questionIndex++].question
