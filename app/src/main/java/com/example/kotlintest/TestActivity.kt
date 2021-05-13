@@ -24,4 +24,6 @@ class TestActivity : AppCompatActivity() {
             .replace(R.id.container, testFragment)
             .commit()
     }
+
+    fun a() {}
 }
