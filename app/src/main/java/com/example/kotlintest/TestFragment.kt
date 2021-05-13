@@ -2,6 +2,7 @@ package com.example.kotlintest
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ class TestFragment() : Fragment() {
     private var dao: QuestionAndAnswerDao? = null
     private var questions: ArrayList<QuestionModel> = ArrayList()
     private var answers: ArrayList<AnswersModel> = ArrayList()
+    var userAnswers: ArrayList<String> = ArrayList()
 
     private var questionIndex = 0
     private var answerIndex = 0
@@ -43,8 +45,6 @@ class TestFragment() : Fragment() {
 
         dao =QuestionAndAnswerDatabase.getDatabase(mContext).dao()
 
-        var userAnswers: ArrayList<String> = ArrayList()
-
         val question = view.findViewById<TextView>(R.id.question_fragment_question)
         val nextButton = view.findViewById<Button>(R.id.question_fragment_button_next)
 
@@ -54,21 +54,28 @@ class TestFragment() : Fragment() {
         val thirdRadioButton = view.findViewById<RadioButton>(R.id.question_fragment_radio_third_answer)
         val fourRadioButton = view.findViewById<RadioButton>(R.id.question_fragment_radio_four_answer)
 
-        radioGroup.setOnCheckedChangeListener() { _, checkedId ->
-            find
-        }
+        var answer: String = ""
 
+        radioGroup.setOnCheckedChangeListener() { _, checkedId ->
+            view.findViewById<RadioButton>(checkedId)?.apply {
+                answer = text as String
+            }
+        }
 
         getQuestionFromDb(question)
         getAnswerFromDb(firstRadioButton, secondRadioButton, thirdRadioButton, fourRadioButton)
 
         nextButton.setOnClickListener {
             if (questionIndex < questions.size) {
+                radioGroup.clearCheck()
                 question.text = questions[questionIndex++].question
                 firstRadioButton.text = answers[answerIndex++].answer
                 secondRadioButton.text = answers[answerIndex++].answer
                 thirdRadioButton.text = answers[answerIndex++].answer
                 fourRadioButton.text = answers[answerIndex++].answer
+                saveAnswer(answer)
+                radioGroup.clearCheck()
+                Log.d("answer added", userAnswers.toString())
             } else
              Toast.makeText(mContext, "все", Toast.LENGTH_SHORT).show()
         }
@@ -110,5 +117,9 @@ class TestFragment() : Fragment() {
             }
 
         }
+    }
+
+    private fun saveAnswer(answer: String) {
+        userAnswers.add(answer)
     }
 }
