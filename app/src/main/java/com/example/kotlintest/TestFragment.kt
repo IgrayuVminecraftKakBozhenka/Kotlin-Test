@@ -43,6 +43,8 @@ class TestFragment() : Fragment() {
 
         dao =QuestionAndAnswerDatabase.getDatabase(mContext).dao()
 
+        var userAnswers: ArrayList<String> = ArrayList()
+
         val question = view.findViewById<TextView>(R.id.question_fragment_question)
         val nextButton = view.findViewById<Button>(R.id.question_fragment_button_next)
 
@@ -52,9 +54,9 @@ class TestFragment() : Fragment() {
         val thirdRadioButton = view.findViewById<RadioButton>(R.id.question_fragment_radio_third_answer)
         val fourRadioButton = view.findViewById<RadioButton>(R.id.question_fragment_radio_four_answer)
 
-        //radioGroup.setOnCheckedChangeListener() {
-        //
-        //}
+        radioGroup.setOnCheckedChangeListener() { _, checkedId ->
+            find
+        }
 
 
         getQuestionFromDb(question)
