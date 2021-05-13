@@ -16,7 +16,8 @@ import kotlinx.coroutines.*
 
 class TestFragment() : Fragment() {
 
-    lateinit var mContext: Context
+
+    private lateinit var mContext: Context
     private var dao: QuestionAndAnswerDao? = null
     private var questions: ArrayList<QuestionModel> = ArrayList()
     private var answers: ArrayList<AnswersModel> = ArrayList()
@@ -43,27 +44,31 @@ class TestFragment() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        dao =QuestionAndAnswerDatabase.getDatabase(mContext).dao()
-
         val question = view.findViewById<TextView>(R.id.question_fragment_question)
         val nextButton = view.findViewById<Button>(R.id.question_fragment_button_next)
 
         val radioGroup = view.findViewById<RadioGroup>(R.id.question_fragment_radio_button_group)
-        val firstRadioButton = view.findViewById<RadioButton>(R.id.question_fragment_radio_first_answer)
-        val secondRadioButton = view.findViewById<RadioButton>(R.id.question_fragment_radio_second_answer)
-        val thirdRadioButton = view.findViewById<RadioButton>(R.id.question_fragment_radio_third_answer)
-        val fourRadioButton = view.findViewById<RadioButton>(R.id.question_fragment_radio_four_answer)
+        val firstRadioButton =
+            view.findViewById<RadioButton>(R.id.question_fragment_radio_first_answer)
+        val secondRadioButton =
+            view.findViewById<RadioButton>(R.id.question_fragment_radio_second_answer)
+        val thirdRadioButton =
+            view.findViewById<RadioButton>(R.id.question_fragment_radio_third_answer)
+        val fourRadioButton =
+            view.findViewById<RadioButton>(R.id.question_fragment_radio_four_answer)
 
-        var answer: String = ""
+        var answer = ""
+
+        dao = QuestionAndAnswerDatabase.getDatabase(mContext).dao()
+
+        getQuestionFromDb(question)
+        getAnswerFromDb(firstRadioButton, secondRadioButton, thirdRadioButton, fourRadioButton)
 
         radioGroup.setOnCheckedChangeListener() { _, checkedId ->
             view.findViewById<RadioButton>(checkedId)?.apply {
                 answer = text as String
             }
         }
-
-        getQuestionFromDb(question)
-        getAnswerFromDb(firstRadioButton, secondRadioButton, thirdRadioButton, fourRadioButton)
 
         nextButton.setOnClickListener {
             if (questionIndex < questions.size) {
@@ -74,12 +79,10 @@ class TestFragment() : Fragment() {
                 thirdRadioButton.text = answers[answerIndex++].answer
                 fourRadioButton.text = answers[answerIndex++].answer
                 saveAnswer(answer)
-                radioGroup.clearCheck()
                 Log.d("answer added", userAnswers.toString())
             } else
-             Toast.makeText(mContext, "все", Toast.LENGTH_SHORT).show()
+                Toast.makeText(mContext, "все", Toast.LENGTH_SHORT).show()
         }
-
     }
 
     private fun getQuestionFromDb(question: TextView) {
@@ -98,8 +101,10 @@ class TestFragment() : Fragment() {
         }
     }
 
-    private fun getAnswerFromDb(firstRadioButton: RadioButton, secondRadioButton: RadioButton,
-                                thirdRadioButton: RadioButton, fourRadioButton: RadioButton) {
+    private fun getAnswerFromDb(
+        firstRadioButton: RadioButton, secondRadioButton: RadioButton,
+        thirdRadioButton: RadioButton, fourRadioButton: RadioButton
+    ) {
         GlobalScope.launch {
 
             val answersFromDb = async(Dispatchers.IO) {
@@ -115,7 +120,6 @@ class TestFragment() : Fragment() {
                     fourRadioButton.text = answers[answerIndex++].answer
                 }
             }
-
         }
     }
 
