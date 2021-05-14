@@ -25,5 +25,4 @@ class TestActivity : AppCompatActivity() {
             .commit()
     }
 
-    fun a() {}
 }

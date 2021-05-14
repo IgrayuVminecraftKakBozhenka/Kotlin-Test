@@ -1,5 +1,6 @@
 package com.example.kotlintest
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,27 +16,18 @@ import kotlinx.coroutines.*
 
 class TestFragment : Fragment() {
 
-    private val dao: QuestionAndAnswerDao =
-        QuestionAndAnswerDatabase.getDatabase(requireContext().applicationContext).dao()
+    private lateinit var dao: QuestionAndAnswerDao
     private val questions: ArrayList<QuestionModel> = ArrayList()
     private val answers: ArrayList<AnswersModel> = ArrayList()
     private val userAnswers: ArrayList<String> = ArrayList()
 
-    private val question = view?.findViewById<TextView>(R.id.question_fragment_question)
-    private val nextButton = view&.findViewById<Button>(R.id.question_fragment_button_next)
-
-    private val radioGroup = view?.findViewById<RadioGroup>(R.id.question_fragment_radio_button_group)
-    private val firstRadioButton =
-        view?.findViewById<RadioButton>(R.id.question_fragment_radio_first_answer)
-    private val secondRadioButton =
-        view?.findViewById<RadioButton>(R.id.question_fragment_radio_second_answer)
-    private val thirdRadioButton =
-        view?.findViewById<RadioButton>(R.id.question_fragment_radio_third_answer)
-    private val fourRadioButton =
-        view?.findViewById<RadioButton>(R.id.question_fragment_radio_four_answer)
-
     private var questionIndex = 0
     private var answerIndex = 0
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        dao = QuestionAndAnswerDatabase.getDatabase(requireContext().applicationContext).dao()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,8 +45,22 @@ class TestFragment : Fragment() {
 
         var answer = ""
 
-        getQuestionFromDb()
-        getAnswerFromDb()
+        val question = view.findViewById<TextView>(R.id.question_fragment_question)
+        val nextButton = view.findViewById<Button>(R.id.question_fragment_button_next)
+
+        val radioGroup = view.findViewById<RadioGroup>(R.id.question_fragment_radio_button_group)
+        val firstRadioButton =
+            view.findViewById<RadioButton>(R.id.question_fragment_radio_first_answer)
+        val secondRadioButton =
+            view.findViewById<RadioButton>(R.id.question_fragment_radio_second_answer)
+        val thirdRadioButton =
+            view.findViewById<RadioButton>(R.id.question_fragment_radio_third_answer)
+        val fourRadioButton =
+            view.findViewById<RadioButton>(R.id.question_fragment_radio_four_answer)
+
+
+        getQuestionFromDb(question)
+        getAnswerFromDb(firstRadioButton, secondRadioButton, thirdRadioButton, fourRadioButton)
 
         radioGroup.setOnCheckedChangeListener { _, checkedId ->
             view.findViewById<RadioButton>(checkedId)?.apply {
@@ -78,7 +84,7 @@ class TestFragment : Fragment() {
         }
     }
 
-    private fun getQuestionFromDb() {
+    private fun getQuestionFromDb(question: TextView) {
         GlobalScope.launch {
             val questionsFromDb = async(Dispatchers.IO) {
                 dao.readAllQuestionData()
@@ -94,7 +100,12 @@ class TestFragment : Fragment() {
         }
     }
 
-    private fun getAnswerFromDb() {
+    private fun getAnswerFromDb(
+        firstRadioButton: RadioButton,
+        secondRadioButton: RadioButton,
+        thirdRadioButton: RadioButton,
+        fourRadioButton: RadioButton)
+    {
         GlobalScope.launch {
             val answersFromDb = async(Dispatchers.IO) {
                 dao.readAllAnswerData()
