@@ -1,4 +1,4 @@
-package com.example.kotlintest
+package com.example.kotlintest.fragments
 
 import android.content.Context
 import android.os.Bundle
@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import com.example.kotlintest.R
 import com.example.kotlintest.data.AnswersModel
 import com.example.kotlintest.data.QuestionAndAnswerDao
 import com.example.kotlintest.data.QuestionAndAnswerDatabase
@@ -15,6 +16,10 @@ import com.example.kotlintest.data.QuestionModel
 import kotlinx.coroutines.*
 
 class TestFragment : Fragment() {
+
+    interface OnTestFinished {
+        fun onTestFinished(userAnswers: ArrayList<String>)
+    }
 
     private lateinit var dao: QuestionAndAnswerDao
     private val questions: ArrayList<QuestionModel> = ArrayList()
@@ -78,9 +83,11 @@ class TestFragment : Fragment() {
                 fourRadioButton.text = answers[answerIndex++].answer
                 saveAnswer(answer)
                 Log.d("answer added", userAnswers.toString())
-            } else
-                Toast.makeText(requireContext().applicationContext, "все", Toast.LENGTH_SHORT)
-                    .show()
+            } else {
+                val listener = activity as OnTestFinished?
+                listener?.onTestFinished(userAnswers)
+            }
+
         }
     }
 

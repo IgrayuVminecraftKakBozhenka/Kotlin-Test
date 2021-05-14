@@ -13,4 +13,7 @@ interface QuestionAndAnswerDao {
 
     @Query("SELECT * FROM answers")
     suspend fun readAllAnswerData(): List<AnswersModel>
+
+    @Query("SELECT answer FROM answers WHERE correct = 1")
+    suspend fun getCorrectAnswer(): ArrayList<String>
 }
