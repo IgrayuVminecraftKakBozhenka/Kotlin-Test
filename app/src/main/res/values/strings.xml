@@ -6,4 +6,7 @@
     <string name="your_level">Your level:</string>
     <string name="ur_score">Your score:</string>
     <string name="to_start">To start</string>
+    <string name="bad_level">Bad</string>
+    <string name="normal_level">Normal</string>
+    <string name="high_level">High</string>
 </resources>
