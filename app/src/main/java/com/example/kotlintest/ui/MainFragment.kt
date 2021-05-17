@@ -1,4 +1,4 @@
-package com.example.kotlintest.fragments
+package com.example.kotlintest.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,8 +7,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.example.kotlintest.R
+import com.example.kotlintest.ui.common.BaseFragment
 
-class MainFragment: Fragment() {
+class MainFragment: BaseFragment() {
 
     interface OnBeginButtonPressed {
         fun onButtonPressed()
@@ -32,5 +33,9 @@ class MainFragment: Fragment() {
             listener?.onButtonPressed()
         }
 
+    }
+
+    override fun onBackPressed(): Boolean {
+        return false
     }
 }

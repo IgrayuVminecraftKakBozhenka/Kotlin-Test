@@ -1,4 +1,4 @@
-package com.example.kotlintest.fragments
+package com.example.kotlintest.ui.test
 
 import android.content.Context
 import android.os.Bundle
@@ -7,15 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.fragment.app.Fragment
 import com.example.kotlintest.R
 import com.example.kotlintest.data.AnswersModel
 import com.example.kotlintest.data.QuestionAndAnswerDao
 import com.example.kotlintest.data.QuestionAndAnswerDatabase
 import com.example.kotlintest.data.QuestionModel
+import com.example.kotlintest.ui.common.BaseFragment
 import kotlinx.coroutines.*
 
-class TestFragment : Fragment() {
+class TestFragment : BaseFragment() {
 
     interface OnTestFinished {
         fun onTestFinished(userAnswers: ArrayList<String>)
@@ -82,13 +82,24 @@ class TestFragment : Fragment() {
                 thirdRadioButton.text = answers[answerIndex++].answer
                 fourRadioButton.text = answers[answerIndex++].answer
                 saveAnswer(answer)
-                Log.d("answer added", userAnswers.toString())
+                Log.d("added", userAnswers.toString())
             } else {
+                saveAnswer(answer)
                 val listener = activity as OnTestFinished?
                 listener?.onTestFinished(userAnswers)
             }
 
         }
+    }
+
+    override fun onBackPressed(): Boolean? {
+        if (false) {
+            return null
+        }
+        requireFragmentManager().beginTransaction()
+            .remove(this)
+            .commit()
+        return true
     }
 
     private fun getQuestionFromDb(question: TextView) {
