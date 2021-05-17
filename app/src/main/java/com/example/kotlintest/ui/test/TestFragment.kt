@@ -69,7 +69,7 @@ class TestFragment : BaseFragment() {
 
         radioGroup.setOnCheckedChangeListener { _, checkedId ->
             view.findViewById<RadioButton>(checkedId)?.apply {
-                answer = text as String
+                answer = text.toString()
             }
         }
 
@@ -93,9 +93,6 @@ class TestFragment : BaseFragment() {
     }
 
     override fun onBackPressed(): Boolean? {
-        if (false) {
-            return null
-        }
         requireFragmentManager().beginTransaction()
             .remove(this)
             .commit()

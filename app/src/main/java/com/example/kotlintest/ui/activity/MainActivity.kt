@@ -1,13 +1,16 @@
-package com.example.kotlintest.ui
+package com.example.kotlintest.ui.activity
 
 import android.os.Bundle
+import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import com.example.kotlintest.R
-import com.example.kotlintest.ui.MainFragment.OnBeginButtonPressed
-import com.example.kotlintest.ui.ResultFragment.*
-import com.example.kotlintest.ui.test.TestFragment.OnTestFinished
 import com.example.kotlintest.ui.common.BaseFragment
+import com.example.kotlintest.ui.main.MainFragment
+import com.example.kotlintest.ui.main.MainFragment.OnBeginButtonPressed
+import com.example.kotlintest.ui.result.ResultFragment
+import com.example.kotlintest.ui.result.ResultFragment.GoToMain
 import com.example.kotlintest.ui.test.TestFragment
+import com.example.kotlintest.ui.test.TestFragment.OnTestFinished
 
 class MainActivity : AppCompatActivity(), OnBeginButtonPressed, OnTestFinished, GoToMain {
 
@@ -22,13 +25,18 @@ class MainActivity : AppCompatActivity(), OnBeginButtonPressed, OnTestFinished, 
             .commit()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
+        return true
+    }
+
     override fun onBackPressed() {
         val fragments = supportFragmentManager.fragments
         val fragmentsLength = fragments.size - 1
         for (i in fragmentsLength downTo 0) {
             val fragment = fragments[i]
-            if (fragment is BaseFragment ) {
-                val backPressedResult= fragment.onBackPressed() ?: return
+            if (fragment is BaseFragment) {
+                val backPressedResult = fragment.onBackPressed() ?: return
             }
         }
         super.onBackPressed()
@@ -58,7 +66,6 @@ class MainActivity : AppCompatActivity(), OnBeginButtonPressed, OnTestFinished, 
         val mainFragment = MainFragment()
         supportFragmentManager.beginTransaction()
             .replace(R.id.container, mainFragment)
-            .addToBackStack(null)
             .commit()
     }
 }

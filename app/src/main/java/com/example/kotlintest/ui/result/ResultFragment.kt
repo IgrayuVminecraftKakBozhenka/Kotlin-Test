@@ -1,4 +1,4 @@
-package com.example.kotlintest.ui
+package com.example.kotlintest.ui.result
 
 import android.content.Context
 import android.os.Bundle
