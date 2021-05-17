@@ -1,7 +1,6 @@
 package com.example.kotlintest.ui.activity
 
 import android.os.Bundle
-import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import com.example.kotlintest.R
 import com.example.kotlintest.ui.common.BaseFragment
@@ -25,10 +24,8 @@ class MainActivity : AppCompatActivity(), OnBeginButtonPressed, OnTestFinished, 
             .commit()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu, menu)
-        return true
-    }
+
+
 
     override fun onBackPressed() {
         val fragments = supportFragmentManager.fragments

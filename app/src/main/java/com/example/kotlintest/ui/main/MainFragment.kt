@@ -1,5 +1,7 @@
 package com.example.kotlintest.ui.main
 
+import android.content.res.Resources
+import android.content.res.Resources.Theme
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,8 +10,9 @@ import android.widget.Button
 import android.widget.Toolbar
 import com.example.kotlintest.R
 import com.example.kotlintest.ui.common.BaseFragment
+import com.example.kotlintest.ui.dialog.Dialog
 
-class MainFragment: BaseFragment() {
+class MainFragment : BaseFragment() {
 
     interface OnBeginButtonPressed {
         fun onButtonPressed()
@@ -30,8 +33,15 @@ class MainFragment: BaseFragment() {
 
         val toolbar = view.findViewById<Toolbar>(R.id.toolbar)
 
-        toolbar.title = "Main menu"
+        toolbar.setTitle(R.string.main_menu)
         toolbar.setNavigationIcon(R.drawable.back_arrow)
+
+        toolbar.setNavigationOnClickListener {
+            val dialog = Dialog()
+            val manager = activity!!.supportFragmentManager
+            dialog.show(manager, "dialog")
+
+        }
 
         beginButton.setOnClickListener {
             val listener = activity as OnBeginButtonPressed?
