@@ -1,5 +1,6 @@
 package com.example.kotlintest.ui.test
 
+import com.example.kotlintest.ui.dialog.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -62,6 +63,15 @@ class TestFragment : BaseFragment() {
             view.findViewById<RadioButton>(R.id.question_fragment_radio_third_answer)
         val fourRadioButton =
             view.findViewById<RadioButton>(R.id.question_fragment_radio_four_answer)
+
+        val toolbar = view.findViewById<Toolbar>(R.id.toolbar)
+        toolbar.setTitle(R.string.test)
+        toolbar.setNavigationIcon(R.drawable.back_arrow)
+        toolbar.setNavigationOnClickListener {
+            val dialog = Dialog()
+            val manager = activity!!.supportFragmentManager
+            dialog.show(manager, "dialog")
+        }
 
 
         getQuestionFromDb(question)

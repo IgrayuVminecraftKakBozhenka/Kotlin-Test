@@ -8,10 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.example.kotlintest.R
 import com.example.kotlintest.data.QuestionAndAnswerDao
 import com.example.kotlintest.data.QuestionAndAnswerDatabase
+import com.example.kotlintest.ui.dialog.Dialog
 import kotlinx.coroutines.*
 
 class ResultFragment : Fragment() {
@@ -45,6 +47,14 @@ class ResultFragment : Fragment() {
         val userScore = view.findViewById<TextView>(R.id.result_fragment_score_text_view)
         val toStartButton = view.findViewById<Button>(R.id.result_fragment_button_to_main)
 
+        val toolbar = view.findViewById<Toolbar>(R.id.toolbar)
+        toolbar.setTitle(R.string.test)
+        toolbar.setNavigationIcon(R.drawable.back_arrow)
+        toolbar.setNavigationOnClickListener {
+            val dialog = Dialog()
+            val manager = activity!!.supportFragmentManager
+            dialog.show(manager, "dialog")
+        }
 
         userAnswers = arguments?.getStringArrayList("result")!!
         getCorrectAnswerFromDb(userScore, userLevel)

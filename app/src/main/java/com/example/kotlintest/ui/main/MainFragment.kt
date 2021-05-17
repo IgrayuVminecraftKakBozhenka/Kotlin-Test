@@ -1,7 +1,5 @@
 package com.example.kotlintest.ui.main
 
-import android.content.res.Resources
-import android.content.res.Resources.Theme
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
