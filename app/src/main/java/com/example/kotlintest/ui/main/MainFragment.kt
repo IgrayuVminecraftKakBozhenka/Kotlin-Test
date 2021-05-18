@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toolbar
 import com.example.kotlintest.R
+import com.example.kotlintest.fragmentMain
 import com.example.kotlintest.ui.common.BaseFragment
 import com.example.kotlintest.ui.dialog.Dialog
 
@@ -35,7 +36,7 @@ class MainFragment : BaseFragment() {
         toolbar.setNavigationIcon(R.drawable.back_arrow)
 
         toolbar.setNavigationOnClickListener {
-            val dialog = Dialog()
+            val dialog = Dialog(fragmentMain)
             val manager = activity!!.supportFragmentManager
             dialog.show(manager, "dialog")
 

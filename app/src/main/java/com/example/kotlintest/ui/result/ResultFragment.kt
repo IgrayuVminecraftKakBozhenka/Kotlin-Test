@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import com.example.kotlintest.R
 import com.example.kotlintest.data.QuestionAndAnswerDao
 import com.example.kotlintest.data.QuestionAndAnswerDatabase
+import com.example.kotlintest.fragmentResult
 import com.example.kotlintest.ui.dialog.Dialog
 import kotlinx.coroutines.*
 
@@ -51,7 +52,7 @@ class ResultFragment : Fragment() {
         toolbar.setTitle(R.string.test)
         toolbar.setNavigationIcon(R.drawable.back_arrow)
         toolbar.setNavigationOnClickListener {
-            val dialog = Dialog()
+            val dialog = Dialog(fragmentResult)
             val manager = activity!!.supportFragmentManager
             dialog.show(manager, "dialog")
         }

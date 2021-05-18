@@ -13,6 +13,7 @@ import com.example.kotlintest.data.AnswersModel
 import com.example.kotlintest.data.QuestionAndAnswerDao
 import com.example.kotlintest.data.QuestionAndAnswerDatabase
 import com.example.kotlintest.data.QuestionModel
+import com.example.kotlintest.fragmentTest
 import com.example.kotlintest.ui.common.BaseFragment
 import kotlinx.coroutines.*
 
@@ -68,7 +69,7 @@ class TestFragment : BaseFragment() {
         toolbar.setTitle(R.string.test)
         toolbar.setNavigationIcon(R.drawable.back_arrow)
         toolbar.setNavigationOnClickListener {
-            val dialog = Dialog()
+            val dialog = Dialog(fragmentTest)
             val manager = activity!!.supportFragmentManager
             dialog.show(manager, "dialog")
         }

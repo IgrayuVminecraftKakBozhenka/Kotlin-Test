@@ -5,8 +5,11 @@ import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import com.example.kotlintest.R
+import com.example.kotlintest.fragmentMain
+import com.example.kotlintest.fragmentResult
+import com.example.kotlintest.fragmentTest
 
-class Dialog : DialogFragment() {
+class Dialog(private val fragmentName: String) : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
@@ -18,7 +21,12 @@ class Dialog : DialogFragment() {
                 .setNegativeButton(
                     R.string.yes
                 ) { _, _ ->
-                    activity!!.onBackPressed()
+                    when(fragmentName) {
+                        fragmentMain -> activity!!.onBackPressed()
+                        fragmentTest -> activity!!.onBackPressed()
+                        fragmentResult -> activity!!.finish()
+                    }
+
                 }
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
