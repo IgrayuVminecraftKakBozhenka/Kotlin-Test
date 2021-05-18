@@ -1,6 +1,5 @@
 package com.example.kotlintest.ui.test
 
-import com.example.kotlintest.ui.dialog.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -8,14 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.cardview.widget.CardView
 import com.example.kotlintest.R
-import com.example.kotlintest.data.AnswersModel
+import com.example.kotlintest.data.models.AnswersModel
 import com.example.kotlintest.data.QuestionAndAnswerDao
 import com.example.kotlintest.data.QuestionAndAnswerDatabase
-import com.example.kotlintest.data.QuestionModel
+import com.example.kotlintest.data.models.QuestionModel
 import com.example.kotlintest.fragmentTest
 import com.example.kotlintest.ui.common.BaseFragment
+import com.example.kotlintest.ui.dialog.Dialog
 import kotlinx.coroutines.*
 
 class TestFragment : BaseFragment() {
@@ -34,7 +33,7 @@ class TestFragment : BaseFragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        dao = QuestionAndAnswerDatabase.getDatabase(requireContext().applicationContext).dao()
+        dao = QuestionAndAnswerDatabase.getDatabase(context.applicationContext).dao()
     }
 
     override fun onCreateView(
@@ -55,6 +54,7 @@ class TestFragment : BaseFragment() {
 
         val question = view.findViewById<TextView>(R.id.question_fragment_question)
         val nextButton = view.findViewById<Button>(R.id.question_fragment_button_next)
+        val previousButton = view.findViewById<Button>(R.id.question_fragment_button_previous)
 
         val radioGroup = view.findViewById<RadioGroup>(R.id.question_fragment_radio_button_group)
         val firstRadioButton =
@@ -90,19 +90,33 @@ class TestFragment : BaseFragment() {
         nextButton.setOnClickListener {
             if (questionIndex < questions.size) {
                 radioGroup.clearCheck()
+                Log.d("index", questionIndex.toString())
                 question.text = questions[questionIndex++].question
                 firstRadioButton.text = answers[answerIndex++].answer
                 secondRadioButton.text = answers[answerIndex++].answer
                 thirdRadioButton.text = answers[answerIndex++].answer
                 fourRadioButton.text = answers[answerIndex++].answer
-                saveAnswer(answer)
+                userAnswers.add(answer)
                 Log.d("added", userAnswers.toString())
             } else {
-                saveAnswer(answer)
+                userAnswers.add(answer)
                 val listener = activity as OnTestFinished?
                 listener?.onTestFinished(userAnswers)
             }
 
+        }
+
+        previousButton.setOnClickListener {
+            if (questionIndex >= 1 && questionIndex <= questions.size) {
+                question.text = questions[questionIndex--].question
+                Log.d("index", questionIndex.toString())
+                userAnswers.remove(answer)
+                radioGroup.clearCheck()
+                fourRadioButton.text = answers[answerIndex--].answer
+                thirdRadioButton.text = answers[answerIndex--].answer
+                secondRadioButton.text = answers[answerIndex--].answer
+                firstRadioButton.text = answers[answerIndex--].answer
+            }
         }
     }
 
@@ -122,8 +136,7 @@ class TestFragment : BaseFragment() {
                 val questionsResult = questionsFromDb.await()
                 if (!questionsResult.isNullOrEmpty()) {
                     questions.addAll(questionsResult)
-                    question.text = questions[questionIndex].question
-                    questionIndex++
+                    question.text = questions[questionIndex++].question
                 }
             }
         }
@@ -133,16 +146,14 @@ class TestFragment : BaseFragment() {
         firstRadioButton: RadioButton,
         secondRadioButton: RadioButton,
         thirdRadioButton: RadioButton,
-        fourRadioButton: RadioButton)
-    {
-        GlobalScope.launch {
-            val answersFromDb = async(Dispatchers.IO) {
-                dao.readAllAnswerData()
-            }
-            withContext(Dispatchers.Main) {
-                val answersResult = answersFromDb.await()
-                if (!answersResult.isNullOrEmpty()) {
-                    answers.addAll(answersResult)
+        fourRadioButton: RadioButton
+    ) {
+
+        GlobalScope.launch(Dispatchers.IO) {
+            val answersList = dao.readAllAnswerData()
+            if (answersList.isNotEmpty()) {
+                withContext(Dispatchers.Main) {
+                    answers.addAll(answersList)
                     firstRadioButton.text = answers[answerIndex++].answer
                     secondRadioButton.text = answers[answerIndex++].answer
                     thirdRadioButton.text = answers[answerIndex++].answer
@@ -150,9 +161,5 @@ class TestFragment : BaseFragment() {
                 }
             }
         }
-    }
-
-    private fun saveAnswer(answer: String) {
-        userAnswers.add(answer)
     }
 }

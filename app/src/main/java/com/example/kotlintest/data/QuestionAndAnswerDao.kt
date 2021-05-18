@@ -1,9 +1,9 @@
 package com.example.kotlintest.data
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
-import androidx.room.Insert
 import androidx.room.Query
+import com.example.kotlintest.data.models.AnswersModel
+import com.example.kotlintest.data.models.QuestionModel
 
 @Dao
 interface QuestionAndAnswerDao {
