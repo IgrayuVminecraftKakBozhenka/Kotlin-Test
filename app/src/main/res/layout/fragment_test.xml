@@ -7,82 +7,104 @@
     android:layout_height="match_parent"
     tools:context=".ui.activity.MainActivity">
 
-    <include layout="@layout/toolbar"
+    <include
+        layout="@layout/toolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         android:orientation="vertical"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp"
-        android:background="@color/white">
+        tools:layout_editor_absoluteY="0dp">
 
-        <TextView
-            android:id="@+id/question_fragment_question"
-            android:layout_width="wrap_content"
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="70sp"
-            android:fontFamily="sans-serif-light"
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            tools:text="Why are u running?" />
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="70dp"
+            android:layout_marginRight="10dp">
 
-        <RadioGroup
-            android:id="@+id/question_fragment_radio_button_group"
+            <TextView
+                android:id="@+id/question_fragment_question"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="sans-serif-light"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                tools:text="Why are u running?" />
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp">
 
-            <RadioButton
-                android:id="@+id/question_fragment_radio_first_answer"
-                android:layout_width="wrap_content"
+            <RadioGroup
+                android:id="@+id/question_fragment_radio_button_group"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5sp"
-                android:textSize="20sp"
-                android:textColor="@color/black"
-                tools:text="answer one" />
+                android:layout_marginBottom="10dp">
 
-            <RadioButton
-                android:id="@+id/question_fragment_radio_second_answer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5sp"
-                android:textSize="20sp"
-                android:textColor="@color/black"
-                tools:text="answer two" />
-
-            <RadioButton
-                android:id="@+id/question_fragment_radio_third_answer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5sp"
-                android:textSize="20sp"
-                android:textColor="@color/black"
-                tools:text="answer three" />
-
-            <RadioButton
-                android:id="@+id/question_fragment_radio_four_answer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5sp"
-                android:textSize="20sp"
-                android:textColor="@color/black"
-                tools:text="answer four" />
+                <RadioButton
+                    android:id="@+id/question_fragment_radio_first_answer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5sp"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    tools:text="answer one" />
 
 
-        </RadioGroup>
+                <RadioButton
+                    android:id="@+id/question_fragment_radio_second_answer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5sp"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    tools:text="answer two" />
+
+                <RadioButton
+                    android:id="@+id/question_fragment_radio_third_answer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5sp"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    tools:text="answer three" />
+
+                <RadioButton
+                    android:id="@+id/question_fragment_radio_four_answer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5sp"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    tools:text="answer four" />
+
+            </RadioGroup>
+        </androidx.cardview.widget.CardView>
 
         <Button
             android:id="@+id/question_fragment_button_next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="15sp"
+            android:layout_margin="15dp"
             android:background="@drawable/circle_button"
             android:text="@string/next_button" />
+
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

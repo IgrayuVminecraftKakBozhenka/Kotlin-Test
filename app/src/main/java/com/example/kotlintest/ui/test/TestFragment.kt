@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.cardview.widget.CardView
 import com.example.kotlintest.R
 import com.example.kotlintest.data.AnswersModel
 import com.example.kotlintest.data.QuestionAndAnswerDao
@@ -77,6 +78,8 @@ class TestFragment : BaseFragment() {
 
         getQuestionFromDb(question)
         getAnswerFromDb(firstRadioButton, secondRadioButton, thirdRadioButton, fourRadioButton)
+
+
 
         radioGroup.setOnCheckedChangeListener { _, checkedId ->
             view.findViewById<RadioButton>(checkedId)?.apply {
