@@ -9,11 +9,10 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import com.example.kotlintest.R
-import com.example.kotlintest.data.models.AnswersModel
 import com.example.kotlintest.data.QuestionAndAnswerDao
 import com.example.kotlintest.data.QuestionAndAnswerDatabase
+import com.example.kotlintest.data.models.AnswersModel
 import com.example.kotlintest.data.models.PageModel
 import com.example.kotlintest.data.models.QuestionModel
 import com.example.kotlintest.fragmentTest
@@ -29,13 +28,11 @@ class TestFragment : BaseFragment() {
     }
 
     private lateinit var dao: QuestionAndAnswerDao
-    private val questions: ArrayList<QuestionModel> = ArrayList()
     private val answers: ArrayList<AnswersModel> = ArrayList()
     private val userAnswers: ArrayList<String> = ArrayList()
     private lateinit var pageViewModel: PageViewModel
 
-    private var questionIndex = 0
-    private var answerIndex = 0
+    private var pageIndex = 0
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -86,37 +83,37 @@ class TestFragment : BaseFragment() {
 
         var pageModels: ArrayList<PageModel>? = null
 
-        pages.observe(viewLifecycleOwner, Observer{
+        pages.observe(viewLifecycleOwner, Observer {
             Log.d("data_from_model", pages.toString())
             pageModels = pages.value
-            Log.d("data_from_model", pageModels?.size.toString())
-
+            if (!pageModels.isNullOrEmpty()) {
+                Log.d("data_from_model", pageModels?.size.toString())
+                question.text = pageModels!![pageIndex].question
+                firstRadioButton.text = pageModels!![pageIndex].answers[0].answer
+                secondRadioButton.text = pageModels!![pageIndex].answers[1].answer
+                thirdRadioButton.text = pageModels!![pageIndex].answers[2].answer
+                fourRadioButton.text = pageModels!![pageIndex].answers[3].answer
+                Log.d("index", pageIndex.toString())
+            }
         })
         Log.d("data_from_model", pageModels.toString())
 
-
-    }
-
-
-
-
-
-/*        radioGroup.setOnCheckedChangeListener { _, checkedId ->
+        radioGroup.setOnCheckedChangeListener { _, checkedId ->
             view.findViewById<RadioButton>(checkedId)?.apply {
                 answer = text.toString()
             }
         }
 
         nextButton.setOnClickListener {
-            if (questionIndex < questions.size) {
+            if (pageIndex < pageModels!!.size - 1) {
                 radioGroup.clearCheck()
-                Log.d("index", questionIndex.toString())
-                question.text = questions[questionIndex++].question
-                firstRadioButton.text = answers[answerIndex++].answer
-                secondRadioButton.text = answers[answerIndex++].answer
-                thirdRadioButton.text = answers[answerIndex++].answer
-                fourRadioButton.text = answers[answerIndex++].answer
+                question.text = pageModels!![++pageIndex].question
+                firstRadioButton.text = pageModels!![pageIndex].answers[0].answer
+                secondRadioButton.text = pageModels!![pageIndex].answers[1].answer
+                thirdRadioButton.text = pageModels!![pageIndex].answers[2].answer
+                fourRadioButton.text = pageModels!![pageIndex].answers[3].answer
                 userAnswers.add(answer)
+                Log.d("index", pageIndex.toString())
                 Log.d("added", userAnswers.toString())
             } else {
                 userAnswers.add(answer)
@@ -127,18 +124,18 @@ class TestFragment : BaseFragment() {
         }
 
         previousButton.setOnClickListener {
-            if (questionIndex >= 1 && questionIndex <= questions.size) {
-                question.text = questions[questionIndex--].question
-                Log.d("index", questionIndex.toString())
+            if (pageIndex >= 1 && pageIndex <= pageModels!!.size) {
+                question.text = pageModels!![--pageIndex].question
+                Log.d("index", pageIndex.toString())
                 userAnswers.remove(answer)
                 radioGroup.clearCheck()
-                fourRadioButton.text = answers[answerIndex--].answer
-                thirdRadioButton.text = answers[answerIndex--].answer
-                secondRadioButton.text = answers[answerIndex--].answer
-                firstRadioButton.text = answers[answerIndex--].answer
+                firstRadioButton.text = pageModels!![pageIndex].answers[0].answer
+                secondRadioButton.text = pageModels!![pageIndex].answers[1].answer
+                thirdRadioButton.text = pageModels!![pageIndex].answers[2].answer
+                fourRadioButton.text = pageModels!![pageIndex].answers[3].answer
             }
         }
-    } */
+    }
 
     override fun onBackPressed(): Boolean? {
         requireFragmentManager().beginTransaction()
@@ -147,38 +144,38 @@ class TestFragment : BaseFragment() {
         return true
     }
 
-   /* private fun getQuestionFromDb(question: TextView) {
-        GlobalScope.launch {
-            val questionsFromDb = async(Dispatchers.IO) {
-                dao.readAllQuestionData()
-            }
-            withContext(Dispatchers.Main) {
-                val questionsResult = questionsFromDb.await()
-                if (!questionsResult.isNullOrEmpty()) {
-                    questions.addAll(questionsResult)
-                    question.text = questions[questionIndex++].question
-                }
-            }
-        }
-    }
+    /* private fun getQuestionFromDb(question: TextView) {
+         GlobalScope.launch {
+             val questionsFromDb = async(Dispatchers.IO) {
+                 dao.readAllQuestionData()
+             }
+             withContext(Dispatchers.Main) {
+                 val questionsResult = questionsFromDb.await()
+                 if (!questionsResult.isNullOrEmpty()) {
+                     questions.addAll(questionsResult)
+                     question.text = questions[questionIndex++].question
+                 }
+             }
+         }
+     }
 
-    private fun getAnswerFromDb(
-        firstRadioButton: RadioButton,
-        secondRadioButton: RadioButton,
-        thirdRadioButton: RadioButton,
-        fourRadioButton: RadioButton
-    ) {
+     private fun getAnswerFromDb(
+         firstRadioButton: RadioButton,
+         secondRadioButton: RadioButton,
+         thirdRadioButton: RadioButton,
+         fourRadioButton: RadioButton
+     ) {
 
-        GlobalScope.launch(Dispatchers.IO) {
-            val answersList = dao.readAllAnswerData()
-            if (answersList.isNotEmpty()) {
-                withContext(Dispatchers.Main) {
-                    answers.addAll(answersList)
-                    firstRadioButton.text = answers[answerIndex++].answer
-                    secondRadioButton.text = answers[answerIndex++].answer
-                    thirdRadioButton.text = answers[answerIndex++].answer
-                    fourRadioButton.text = answers[answerIndex++].answer
-                }
-            }
-        } */
-    }
+         GlobalScope.launch(Dispatchers.IO) {
+             val answersList = dao.readAllAnswerData()
+             if (answersList.isNotEmpty()) {
+                 withContext(Dispatchers.Main) {
+                     answers.addAll(answersList)
+                     firstRadioButton.text = answers[answerIndex++].answer
+                     secondRadioButton.text = answers[answerIndex++].answer
+                     thirdRadioButton.text = answers[answerIndex++].answer
+                     fourRadioButton.text = answers[answerIndex++].answer
+                 }
+             }
+         } */
+}
