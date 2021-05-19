@@ -1,6 +1,7 @@
 package com.example.kotlintest.view_model
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.example.kotlintest.data.QuestionAndAnswerDatabase
@@ -9,7 +10,7 @@ import com.example.kotlintest.data.models.PageModel
 import kotlinx.coroutines.*
 
 class PageViewModel(application: Application) : AndroidViewModel(application) {
-    private val pageList: MutableLiveData<List<PageModel>> = MutableLiveData()
+    private val pageList: MutableLiveData<ArrayList<PageModel>> = MutableLiveData()
     private val dao = QuestionAndAnswerDatabase.getDatabase(getApplication()).dao()
 
     init {
@@ -31,6 +32,7 @@ class PageViewModel(application: Application) : AndroidViewModel(application) {
             }
             withContext(Dispatchers.Main) {
                 pageList.value = pageModels
+                Log.d("data_from_list", pageList.toString())
             }
         }
     }

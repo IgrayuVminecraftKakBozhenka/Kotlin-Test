@@ -7,12 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.example.kotlintest.R
 import com.example.kotlintest.data.models.AnswersModel
 import com.example.kotlintest.data.QuestionAndAnswerDao
 import com.example.kotlintest.data.QuestionAndAnswerDatabase
+import com.example.kotlintest.data.models.PageModel
 import com.example.kotlintest.data.models.QuestionModel
 import com.example.kotlintest.fragmentTest
 import com.example.kotlintest.ui.common.BaseFragment
@@ -30,7 +32,7 @@ class TestFragment : BaseFragment() {
     private val questions: ArrayList<QuestionModel> = ArrayList()
     private val answers: ArrayList<AnswersModel> = ArrayList()
     private val userAnswers: ArrayList<String> = ArrayList()
-    private val pageViewModel = ViewModelProvider(this).get(PageViewModel::class.java)
+    private lateinit var pageViewModel: PageViewModel
 
     private var questionIndex = 0
     private var answerIndex = 0
@@ -38,6 +40,7 @@ class TestFragment : BaseFragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         dao = QuestionAndAnswerDatabase.getDatabase(context.applicationContext).dao()
+        pageViewModel = ViewModelProvider(this).get(PageViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -81,13 +84,24 @@ class TestFragment : BaseFragment() {
 
         val pages = pageViewModel.getPageList()
 
+        var pageModels: ArrayList<PageModel>? = null
 
-        getQuestionFromDb(question)
-        getAnswerFromDb(firstRadioButton, secondRadioButton, thirdRadioButton, fourRadioButton)
+        pages.observe(viewLifecycleOwner, Observer{
+            Log.d("data_from_model", pages.toString())
+            pageModels = pages.value
+            Log.d("data_from_model", pageModels?.size.toString())
+
+        })
+        Log.d("data_from_model", pageModels.toString())
+
+
+    }
 
 
 
-        radioGroup.setOnCheckedChangeListener { _, checkedId ->
+
+
+/*        radioGroup.setOnCheckedChangeListener { _, checkedId ->
             view.findViewById<RadioButton>(checkedId)?.apply {
                 answer = text.toString()
             }
@@ -124,7 +138,7 @@ class TestFragment : BaseFragment() {
                 firstRadioButton.text = answers[answerIndex--].answer
             }
         }
-    }
+    } */
 
     override fun onBackPressed(): Boolean? {
         requireFragmentManager().beginTransaction()
@@ -133,7 +147,7 @@ class TestFragment : BaseFragment() {
         return true
     }
 
-    private fun getQuestionFromDb(question: TextView) {
+   /* private fun getQuestionFromDb(question: TextView) {
         GlobalScope.launch {
             val questionsFromDb = async(Dispatchers.IO) {
                 dao.readAllQuestionData()
@@ -166,6 +180,5 @@ class TestFragment : BaseFragment() {
                     fourRadioButton.text = answers[answerIndex++].answer
                 }
             }
-        }
+        } */
     }
-}
