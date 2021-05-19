@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.example.kotlintest.R
 import com.example.kotlintest.data.models.AnswersModel
 import com.example.kotlintest.data.QuestionAndAnswerDao
@@ -15,6 +17,7 @@ import com.example.kotlintest.data.models.QuestionModel
 import com.example.kotlintest.fragmentTest
 import com.example.kotlintest.ui.common.BaseFragment
 import com.example.kotlintest.ui.dialog.Dialog
+import com.example.kotlintest.view_model.PageViewModel
 import kotlinx.coroutines.*
 
 class TestFragment : BaseFragment() {
@@ -27,6 +30,7 @@ class TestFragment : BaseFragment() {
     private val questions: ArrayList<QuestionModel> = ArrayList()
     private val answers: ArrayList<AnswersModel> = ArrayList()
     private val userAnswers: ArrayList<String> = ArrayList()
+    private val pageViewModel = ViewModelProvider(this).get(PageViewModel::class.java)
 
     private var questionIndex = 0
     private var answerIndex = 0
@@ -74,6 +78,8 @@ class TestFragment : BaseFragment() {
             val manager = activity!!.supportFragmentManager
             dialog.show(manager, "dialog")
         }
+
+        val pages = pageViewModel.getPageList()
 
 
         getQuestionFromDb(question)
