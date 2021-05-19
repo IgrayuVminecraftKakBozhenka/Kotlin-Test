@@ -9,15 +9,15 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toolbar
-import androidx.fragment.app.Fragment
 import com.example.kotlintest.R
 import com.example.kotlintest.data.QuestionAndAnswerDao
 import com.example.kotlintest.data.QuestionAndAnswerDatabase
 import com.example.kotlintest.fragmentResult
+import com.example.kotlintest.ui.common.BaseFragment
 import com.example.kotlintest.ui.dialog.Dialog
 import kotlinx.coroutines.*
 
-class ResultFragment : Fragment() {
+class ResultFragment : BaseFragment() {
 
     interface GoToMain {
         fun goToMain()
@@ -27,6 +27,7 @@ class ResultFragment : Fragment() {
     private var userAnswers = ArrayList<String>()
     private val correctAnswers = ArrayList<String>()
     private var score = 0
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -96,5 +97,11 @@ class ResultFragment : Fragment() {
         }
     }
 
+    override fun onBackPressed(): Boolean? {
+        parentFragmentManager.beginTransaction()
+            .remove(this)
+            .commit()
+        return true
+    }
 
 }

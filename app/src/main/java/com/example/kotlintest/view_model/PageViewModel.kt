@@ -22,10 +22,10 @@ class PageViewModel(application: Application) : AndroidViewModel(application) {
             questions.forEach {
                 val question = it.question
                 val questionId = it._id
-                val answersToPage: ArrayList<AnswersModel> = ArrayList()
+                val answersToPage: ArrayList<String> = ArrayList()
                 answers.forEach {
                     if (it.question_id == questionId)
-                        answersToPage.add(it)
+                        answersToPage.add(it.answer)
                 }
                 val pageModel = PageModel(question, answersToPage)
                 pageModels.add(pageModel)
