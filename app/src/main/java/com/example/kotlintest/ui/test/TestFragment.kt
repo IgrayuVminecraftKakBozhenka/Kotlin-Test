@@ -1,9 +1,6 @@
 package com.example.kotlintest.ui.test
 
-import android.app.Application
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,8 +8,6 @@ import android.widget.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.kotlintest.R
-import com.example.kotlintest.data.QuestionAndAnswerDao
-import com.example.kotlintest.data.QuestionAndAnswerDatabase
 import com.example.kotlintest.data.models.PageModel
 import com.example.kotlintest.fragmentTest
 import com.example.kotlintest.ui.common.BaseFragment
@@ -75,9 +70,23 @@ class TestFragment : BaseFragment() {
 
         //question.text = viewModel.getNextPage().question
 
-        viewModel.page.observe(viewLifecycleOwner, Observer { pageModel ->
-            question.text = pageModel.question
+        viewModel.page.observe(viewLifecycleOwner, Observer { page ->
+            question.text = page.question
+            firstRadioButton.text = page.answers[0]
+            secondRadioButton.text = page.answers[1]
+            thirdRadioButton.text = page.answers[2]
+            fourRadioButton.text = page.answers[3]
         })
+
+        nextButton.setOnClickListener {
+            val page: PageModel = viewModel.getNextPage().value!!
+            question.text = page.question
+            firstRadioButton.text = page.answers[0]
+            secondRadioButton.text = page.answers[1]
+            thirdRadioButton.text = page.answers[2]
+            fourRadioButton.text = page.answers[3]
+        }
+
 
         //pages.observe(viewLifecycleOwner, Observer { pageModels ->
         //    Log.d("data_from_model", pages.toString())
@@ -97,6 +106,7 @@ class TestFragment : BaseFragment() {
                 answer = text.toString()
             }
         }
+
 
 //        nextButton.setOnClickListener {
 //            val pageModels = viewModel.pagesList.value

@@ -44,7 +44,7 @@ class TestViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun getNextPage(): MutableLiveData<PageModel> {
-        page.value = pages[pageIndex]
+        page.value = pages[++pageIndex]
         return page
     }
 
