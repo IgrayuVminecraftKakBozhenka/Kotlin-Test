@@ -24,9 +24,6 @@ class MainActivity : AppCompatActivity(), OnBeginButtonPressed, OnTestFinished, 
             .commit()
     }
 
-
-
-
     override fun onBackPressed() {
         val fragments = supportFragmentManager.fragments
         val fragmentsLength = fragments.size - 1
@@ -52,7 +49,6 @@ class MainActivity : AppCompatActivity(), OnBeginButtonPressed, OnTestFinished, 
         val bundle = Bundle()
         bundle.putStringArrayList("result", userAnswers)
         resultFragment.arguments = bundle
-
         supportFragmentManager.beginTransaction()
             .replace(R.id.container, resultFragment)
             .addToBackStack(null)
