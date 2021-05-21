@@ -16,6 +16,7 @@ import com.example.kotlintest.fragmentResult
 import com.example.kotlintest.ui.common.BaseFragment
 import com.example.kotlintest.ui.dialog.Dialog
 import kotlinx.coroutines.*
+import java.util.*
 
 class ResultFragment : BaseFragment() {
 
@@ -98,7 +99,7 @@ class ResultFragment : BaseFragment() {
     }
 
     override fun onBackPressed(): Boolean? {
-        parentFragmentManager.beginTransaction()
+        requireFragmentManager().beginTransaction()
             .remove(this)
             .commit()
         return true

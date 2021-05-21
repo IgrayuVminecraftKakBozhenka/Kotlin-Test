@@ -1,5 +1,6 @@
 package com.example.kotlintest.ui.test
 
+import android.app.Application
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -16,7 +17,7 @@ import com.example.kotlintest.data.models.PageModel
 import com.example.kotlintest.fragmentTest
 import com.example.kotlintest.ui.common.BaseFragment
 import com.example.kotlintest.ui.dialog.Dialog
-import com.example.kotlintest.view_model.PageViewModel
+import java.util.*
 
 class TestFragment : BaseFragment() {
 
@@ -24,16 +25,12 @@ class TestFragment : BaseFragment() {
         fun onTestFinished(userAnswers: ArrayList<String>)
     }
 
-    private lateinit var dao: QuestionAndAnswerDao
-    private val userAnswers: ArrayList<String> = ArrayList()
-    private lateinit var pageViewModel: PageViewModel
+    private lateinit var viewModel: TestViewModel
 
-    private var pageIndex = 0
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        dao = QuestionAndAnswerDatabase.getDatabase(context.applicationContext).dao()
-        pageViewModel = ViewModelProvider(this).get(PageViewModel::class.java)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
+            .create(TestViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -75,24 +72,25 @@ class TestFragment : BaseFragment() {
             dialog.show(manager, "dialog")
         }
 
-        val pages = pageViewModel.getPageList()
 
-        var pageModels: ArrayList<PageModel>? = null
+        //question.text = viewModel.getNextPage().question
 
-        pages.observe(viewLifecycleOwner, Observer {
-            Log.d("data_from_model", pages.toString())
-            pageModels = pages.value
-            if (!pageModels.isNullOrEmpty()) {
-                Log.d("data_from_model", pageModels?.size.toString())
-                question.text = pageModels!![pageIndex].question
-                firstRadioButton.text = pageModels!![pageIndex].answers[0]
-                secondRadioButton.text = pageModels!![pageIndex].answers[1]
-                thirdRadioButton.text = pageModels!![pageIndex].answers[2]
-                fourRadioButton.text = pageModels!![pageIndex].answers[3]
-                Log.d("index", pageIndex.toString())
-            }
+        viewModel.page.observe(viewLifecycleOwner, Observer { pageModel ->
+            question.text = pageModel.question
         })
-        Log.d("data_from_model", pageModels.toString())
+
+        //pages.observe(viewLifecycleOwner, Observer { pageModels ->
+        //    Log.d("data_from_model", pages.toString())
+        //    if (pageModels.isNotEmpty()) {
+        //        Log.d("data_from_model", pageModels?.size.toString())
+        //        question.text = pageModels!![pageIndex].question
+        //        firstRadioButton.text = pageModels[pageIndex].answers[0]
+        //        secondRadioButton.text = pageModels[pageIndex].answers[1]
+        //        thirdRadioButton.text = pageModels[pageIndex].answers[2]
+        //        fourRadioButton.text = pageModels[pageIndex].answers[3]
+        //        Log.d("index", pageIndex.toString())
+        //    }
+        //})
 
         radioGroup.setOnCheckedChangeListener { _, checkedId ->
             view.findViewById<RadioButton>(checkedId)?.apply {
@@ -100,41 +98,44 @@ class TestFragment : BaseFragment() {
             }
         }
 
-        nextButton.setOnClickListener {
-            if (pageIndex < pageModels!!.size - 1) {
-                radioGroup.clearCheck()
-                question.text = pageModels!![++pageIndex].question
-                firstRadioButton.text = pageModels!![pageIndex].answers[0]
-                secondRadioButton.text = pageModels!![pageIndex].answers[1]
-                thirdRadioButton.text = pageModels!![pageIndex].answers[2]
-                fourRadioButton.text = pageModels!![pageIndex].answers[3]
-                userAnswers.add(answer)
-                Log.d("index", pageIndex.toString())
-                Log.d("added", userAnswers.toString())
-            } else {
-                userAnswers.add(answer)
-                val listener = activity as OnTestFinished?
-                listener?.onTestFinished(userAnswers)
-            }
-
-        }
-
-        previousButton.setOnClickListener {
-            if (pageIndex >= 1 && pageIndex <= pageModels!!.size) {
-                question.text = pageModels!![--pageIndex].question
-                Log.d("index", pageIndex.toString())
-                userAnswers.remove(answer)
-                radioGroup.clearCheck()
-                firstRadioButton.text = pageModels!![pageIndex].answers[0]
-                secondRadioButton.text = pageModels!![pageIndex].answers[1]
-                thirdRadioButton.text = pageModels!![pageIndex].answers[2]
-                fourRadioButton.text = pageModels!![pageIndex].answers[3]
-            }
-        }
+//        nextButton.setOnClickListener {
+//            val pageModels = viewModel.pagesList.value
+//            if (pageIndex < pageModels!!.size - 1) {
+//                radioGroup.clearCheck()
+//                question.text = pageModels[++pageIndex].question
+//                firstRadioButton.text = pageModels[pageIndex].answers[0]
+//                secondRadioButton.text = pageModels[pageIndex].answers[1]
+//                thirdRadioButton.text = pageModels[pageIndex].answers[2]
+//                fourRadioButton.text = pageModels[pageIndex].answers[3]
+//                userAnswers.add(answer)
+//                Log.d("index", pageIndex.toString())
+//                Log.d("added", userAnswers.toString())
+//            } else {
+//                userAnswers.add(answer)
+//                val listener = activity as OnTestFinished?
+//                listener?.onTestFinished(userAnswers)
+//            }
+//
+//        }
+//
+//        previousButton.setOnClickListener {
+//            val pageModels = viewModel.pagesList.value
+//            if (pageIndex >= 1 && pageIndex <= pageModels!!.size) {
+//                question.text = pageModels[--pageIndex].question
+//                Log.d("index", pageIndex.toString())
+//                userAnswers.remove(answer)
+//                radioGroup.clearCheck()
+//                firstRadioButton.text = pageModels[pageIndex].answers[0]
+//                secondRadioButton.text = pageModels[pageIndex].answers[1]
+//                thirdRadioButton.text = pageModels[pageIndex].answers[2]
+//                fourRadioButton.text = pageModels[pageIndex].answers[3]
+//            }
+//        }
     }
 
     override fun onBackPressed(): Boolean? {
-        parentFragmentManager.beginTransaction()
+        viewModel.exit()
+        requireFragmentManager().beginTransaction()
             .remove(this)
             .commit()
         return true

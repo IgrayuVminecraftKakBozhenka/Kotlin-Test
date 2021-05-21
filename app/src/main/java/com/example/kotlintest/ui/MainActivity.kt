@@ -1,4 +1,4 @@
-package com.example.kotlintest.ui.activity
+package com.example.kotlintest.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +10,7 @@ import com.example.kotlintest.ui.result.ResultFragment
 import com.example.kotlintest.ui.result.ResultFragment.GoToMain
 import com.example.kotlintest.ui.test.TestFragment
 import com.example.kotlintest.ui.test.TestFragment.OnTestFinished
+import java.util.*
 
 class MainActivity : AppCompatActivity(), OnBeginButtonPressed, OnTestFinished, GoToMain {
 
@@ -23,6 +24,8 @@ class MainActivity : AppCompatActivity(), OnBeginButtonPressed, OnTestFinished, 
             .replace(R.id.container, mainFragment)
             .commit()
     }
+
+    //private val navigator = SupportFragmentNavigator(supportFragmentManager, R.id.)
 
     override fun onBackPressed() {
         val fragments = supportFragmentManager.fragments
