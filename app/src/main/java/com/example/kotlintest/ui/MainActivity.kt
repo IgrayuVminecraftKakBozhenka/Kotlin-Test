@@ -25,8 +25,6 @@ class MainActivity : AppCompatActivity(), OnBeginButtonPressed, OnTestFinished, 
             .commit()
     }
 
-    //private val navigator = SupportFragmentNavigator(supportFragmentManager, R.id.)
-
     override fun onBackPressed() {
         val fragments = supportFragmentManager.fragments
         val fragmentsLength = fragments.size - 1

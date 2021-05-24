@@ -16,4 +16,5 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="test">Test</string>
+    <string name="this_is_a_first_question">This is a first question</string>
 </resources>

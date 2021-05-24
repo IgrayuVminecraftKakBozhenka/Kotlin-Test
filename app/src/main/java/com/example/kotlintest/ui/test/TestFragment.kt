@@ -13,6 +13,7 @@ import com.example.kotlintest.fragmentTest
 import com.example.kotlintest.ui.common.BaseFragment
 import com.example.kotlintest.ui.dialog.Dialog
 import java.util.*
+import kotlin.collections.ArrayList
 
 class TestFragment : BaseFragment() {
 
@@ -21,6 +22,8 @@ class TestFragment : BaseFragment() {
     }
 
     private lateinit var viewModel: TestViewModel
+
+    private val userAnswers: ArrayList<String> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,13 +65,8 @@ class TestFragment : BaseFragment() {
         toolbar.setTitle(R.string.test)
         toolbar.setNavigationIcon(R.drawable.back_arrow)
         toolbar.setNavigationOnClickListener {
-            val dialog = Dialog(fragmentTest)
-            val manager = activity!!.supportFragmentManager
-            dialog.show(manager, "dialog")
+            showDialog()
         }
-
-
-        //question.text = viewModel.getNextPage().question
 
         viewModel.page.observe(viewLifecycleOwner, Observer { page ->
             question.text = page.question
@@ -79,68 +77,20 @@ class TestFragment : BaseFragment() {
         })
 
         nextButton.setOnClickListener {
-            val page: PageModel = viewModel.getNextPage().value!!
-            question.text = page.question
-            firstRadioButton.text = page.answers[0]
-            secondRadioButton.text = page.answers[1]
-            thirdRadioButton.text = page.answers[2]
-            fourRadioButton.text = page.answers[3]
+            nextButtonClick(radioGroup, answer, question, firstRadioButton, secondRadioButton,
+                thirdRadioButton, fourRadioButton)
         }
 
-
-        //pages.observe(viewLifecycleOwner, Observer { pageModels ->
-        //    Log.d("data_from_model", pages.toString())
-        //    if (pageModels.isNotEmpty()) {
-        //        Log.d("data_from_model", pageModels?.size.toString())
-        //        question.text = pageModels!![pageIndex].question
-        //        firstRadioButton.text = pageModels[pageIndex].answers[0]
-        //        secondRadioButton.text = pageModels[pageIndex].answers[1]
-        //        thirdRadioButton.text = pageModels[pageIndex].answers[2]
-        //        fourRadioButton.text = pageModels[pageIndex].answers[3]
-        //        Log.d("index", pageIndex.toString())
-        //    }
-        //})
+        previousButton.setOnClickListener {
+            previousButtonClick(radioGroup, answer, question, firstRadioButton, secondRadioButton,
+                thirdRadioButton, fourRadioButton)
+        }
 
         radioGroup.setOnCheckedChangeListener { _, checkedId ->
             view.findViewById<RadioButton>(checkedId)?.apply {
                 answer = text.toString()
             }
         }
-
-
-//        nextButton.setOnClickListener {
-//            val pageModels = viewModel.pagesList.value
-//            if (pageIndex < pageModels!!.size - 1) {
-//                radioGroup.clearCheck()
-//                question.text = pageModels[++pageIndex].question
-//                firstRadioButton.text = pageModels[pageIndex].answers[0]
-//                secondRadioButton.text = pageModels[pageIndex].answers[1]
-//                thirdRadioButton.text = pageModels[pageIndex].answers[2]
-//                fourRadioButton.text = pageModels[pageIndex].answers[3]
-//                userAnswers.add(answer)
-//                Log.d("index", pageIndex.toString())
-//                Log.d("added", userAnswers.toString())
-//            } else {
-//                userAnswers.add(answer)
-//                val listener = activity as OnTestFinished?
-//                listener?.onTestFinished(userAnswers)
-//            }
-//
-//        }
-//
-//        previousButton.setOnClickListener {
-//            val pageModels = viewModel.pagesList.value
-//            if (pageIndex >= 1 && pageIndex <= pageModels!!.size) {
-//                question.text = pageModels[--pageIndex].question
-//                Log.d("index", pageIndex.toString())
-//                userAnswers.remove(answer)
-//                radioGroup.clearCheck()
-//                firstRadioButton.text = pageModels[pageIndex].answers[0]
-//                secondRadioButton.text = pageModels[pageIndex].answers[1]
-//                thirdRadioButton.text = pageModels[pageIndex].answers[2]
-//                fourRadioButton.text = pageModels[pageIndex].answers[3]
-//            }
-//        }
     }
 
     override fun onBackPressed(): Boolean? {
@@ -149,5 +99,43 @@ class TestFragment : BaseFragment() {
             .remove(this)
             .commit()
         return true
+    }
+
+    private fun nextButtonClick(radioGroup: RadioGroup, answer: String, question: TextView,
+                        firstRadioButton: RadioButton, secondRadioButton: RadioButton,
+                        thirdRadioButton: RadioButton, fourRadioButton: RadioButton) {
+        radioGroup.clearCheck()
+        val page = viewModel.getNextPage()?.value
+        if (page != null) {
+            userAnswers.add(answer)
+            question.text = page.question
+            firstRadioButton.text = page.answers[0]
+            secondRadioButton.text = page.answers[1]
+            thirdRadioButton.text = page.answers[2]
+            fourRadioButton.text = page.answers[3]
+        }
+    }
+
+    private fun previousButtonClick(radioGroup: RadioGroup, answer: String, question: TextView,
+                            firstRadioButton: RadioButton, secondRadioButton: RadioButton,
+                            thirdRadioButton: RadioButton, fourRadioButton: RadioButton) {
+        radioGroup.clearCheck()
+        val page = viewModel.getPreviousPage()?.value
+        if (page != null) {
+            userAnswers.remove(answer)
+            question.text = page.question
+            firstRadioButton.text = page.answers[0]
+            secondRadioButton.text = page.answers[1]
+            thirdRadioButton.text = page.answers[2]
+            fourRadioButton.text = page.answers[3]
+        } else {
+            Toast.makeText(context, R.string.this_is_a_first_question, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun showDialog() {
+        val dialog = Dialog(fragmentTest)
+        val manager = activity!!.supportFragmentManager
+        dialog.show(manager, "dialog")
     }
 }

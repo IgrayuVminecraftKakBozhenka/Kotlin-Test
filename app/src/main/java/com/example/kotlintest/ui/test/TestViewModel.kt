@@ -43,12 +43,21 @@ class TestViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun getNextPage(): MutableLiveData<PageModel> {
-        page.value = pages[++pageIndex]
-        return page
+    fun getNextPage(): MutableLiveData<PageModel>? {
+        if (pageIndex < pages.size - 1) {
+            page.value = pages[++pageIndex]
+            return page
+        }
+        return null
     }
 
-
+    fun getPreviousPage(): MutableLiveData<PageModel>? {
+        if (pageIndex > 0) {
+            page.value = pages[--pageIndex]
+            return page
+        }
+        return null
+    }
 
 
     fun exit() {
