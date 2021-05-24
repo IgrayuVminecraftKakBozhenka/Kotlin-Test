@@ -94,8 +94,7 @@ class TestFragment : BaseFragment() {
     }
 
     override fun onBackPressed(): Boolean? {
-        viewModel.exit()
-        requireFragmentManager().beginTransaction()
+        parentFragmentManager.beginTransaction()
             .remove(this)
             .commit()
         return true
