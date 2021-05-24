@@ -14,6 +14,7 @@ class TestViewModel(application: Application) : AndroidViewModel(application) {
     private val pages = mutableListOf<PageModel>()
     val page : MutableLiveData<PageModel> = MutableLiveData()
     private val dao = QuestionAndAnswerDatabase.getDatabase(getApplication()).dao()
+    private val userAnswers = ArrayList<String>()
 
     var pageIndex = 0
         private set
@@ -43,20 +44,18 @@ class TestViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun getNextPage(): MutableLiveData<PageModel>? {
+    fun getNextPage(answer: String) {
         if (pageIndex < pages.size - 1) {
+            userAnswers.add(answer)
             page.value = pages[++pageIndex]
-            return page
         }
-        return null
     }
 
-    fun getPreviousPage(): MutableLiveData<PageModel>? {
+    fun getPreviousPage() {
         if (pageIndex > 0) {
+            userAnswers.removeAt(userAnswers.size - 1)
             page.value = pages[--pageIndex]
-            return page
         }
-        return null
     }
 
 
