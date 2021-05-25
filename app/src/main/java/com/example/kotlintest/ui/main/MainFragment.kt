@@ -41,19 +41,21 @@ class MainFragment : BaseFragment() {
         toolbar.setNavigationIcon(R.drawable.back_arrow)
 
         toolbar.setNavigationOnClickListener {
-            val dialog = Dialog(fragmentMain)
-            val manager = requireActivity().supportFragmentManager
-            dialog.show(manager, "dialog")
-
+            showDialog()
         }
 
         beginButton.setOnClickListener {
             viewModel.goToTest()
         }
-
     }
 
     override fun onBackPressed(): Boolean {
         return false
+    }
+
+    private fun showDialog() {
+        val dialog = Dialog(fragmentMain)
+        val manager = requireActivity().supportFragmentManager
+        dialog.show(manager, "dialog")
     }
 }

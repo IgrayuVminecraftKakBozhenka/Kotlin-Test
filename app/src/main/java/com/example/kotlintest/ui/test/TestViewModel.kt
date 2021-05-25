@@ -3,8 +3,10 @@ package com.example.kotlintest.ui.test
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
+import com.example.kotlintest.App
 import com.example.kotlintest.data.QuestionAndAnswerDatabase
 import com.example.kotlintest.data.models.PageModel
+import com.example.kotlintest.ui.common.Screens
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -15,6 +17,8 @@ class TestViewModel(application: Application) : AndroidViewModel(application) {
     val page : MutableLiveData<PageModel> = MutableLiveData()
     private val dao = QuestionAndAnswerDatabase.getDatabase(getApplication()).dao()
     private val userAnswers = ArrayList<String>()
+
+    private val app = application
 
     var pageIndex = 0
         private set
@@ -58,6 +62,11 @@ class TestViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun goToResultFragment() {
+        (app as App).router.sendResult("userAnswers", userAnswers)
+        app.router.navigateTo(Screens.Result())
+
+    }
 
     fun exit() {
         TODO("Not yet implemented")
