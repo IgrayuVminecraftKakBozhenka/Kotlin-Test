@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.kotlintest.R
 import com.example.kotlintest.fragmentTest
@@ -27,10 +26,6 @@ class TestFragment : BaseFragment() {
     private lateinit var thirdRadioButton: RadioButton
     private lateinit var fourRadioButton: RadioButton
 
-
-    interface OnTestFinished {
-        fun onTestFinished(userAnswers: ArrayList<String>)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +65,6 @@ class TestFragment : BaseFragment() {
         nextButton.setOnClickListener {
             radioGroup.clearCheck()
             viewModel.getNextPage(answer)
-
         }
 
         previousButton.setOnClickListener {
@@ -86,7 +80,7 @@ class TestFragment : BaseFragment() {
 
     }
 
-    override fun onBackPressed(): Boolean? {
+    override fun onBackPressed(): Boolean {
         parentFragmentManager.beginTransaction()
             .remove(this)
             .commit()
@@ -96,7 +90,7 @@ class TestFragment : BaseFragment() {
 
     private fun showDialog() {
         val dialog = Dialog(fragmentTest)
-        val manager = activity!!.supportFragmentManager
+        val manager = requireActivity().supportFragmentManager
         dialog.show(manager, "dialog")
     }
 

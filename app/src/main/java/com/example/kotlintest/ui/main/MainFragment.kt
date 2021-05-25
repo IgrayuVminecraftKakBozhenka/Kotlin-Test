@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toolbar
+import androidx.lifecycle.ViewModelProvider
 import com.example.kotlintest.R
 import com.example.kotlintest.fragmentMain
 import com.example.kotlintest.ui.common.BaseFragment
@@ -13,8 +14,12 @@ import com.example.kotlintest.ui.dialog.Dialog
 
 class MainFragment : BaseFragment() {
 
-    interface OnBeginButtonPressed {
-        fun onButtonPressed()
+    private lateinit var viewModel: MainViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
+            .create(MainViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -37,14 +42,13 @@ class MainFragment : BaseFragment() {
 
         toolbar.setNavigationOnClickListener {
             val dialog = Dialog(fragmentMain)
-            val manager = activity!!.supportFragmentManager
+            val manager = requireActivity().supportFragmentManager
             dialog.show(manager, "dialog")
 
         }
 
         beginButton.setOnClickListener {
-            val listener = activity as OnBeginButtonPressed?
-            listener?.onButtonPressed()
+            viewModel.goToTest()
         }
 
     }
