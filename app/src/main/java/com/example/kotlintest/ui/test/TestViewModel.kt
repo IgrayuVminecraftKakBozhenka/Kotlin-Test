@@ -2,12 +2,13 @@ package com.example.kotlintest.ui.test
 
 import android.app.Application
 import android.util.Log
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.kotlintest.App
 import com.example.kotlintest.data.QuestionAndAnswerDatabase
 import com.example.kotlintest.data.models.PageModel
 import com.example.kotlintest.ui.common.Screens
-import com.example.kotlintest.ui.common.USER_ANSWERS
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -15,7 +16,7 @@ import kotlinx.coroutines.withContext
 class TestViewModel(application: Application) : AndroidViewModel(application) {
 
     private val pages = mutableListOf<PageModel>()
-    val page : MutableLiveData<PageModel> = MutableLiveData()
+    val page: MutableLiveData<PageModel> = MutableLiveData()
     private val dao = QuestionAndAnswerDatabase.getDatabase(getApplication()).dao()
     private val userAnswers = ArrayList<String>()
 
@@ -66,11 +67,13 @@ class TestViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun exit() {
+        TODO("Not yet implemented")
+    }
+
     private fun goToResultFragment() {
         (app as App).router.navigateTo(Screens.Result(userAnswers))
     }
 
-    fun exit() {
-        TODO("Not yet implemented")
-    }
+
 }

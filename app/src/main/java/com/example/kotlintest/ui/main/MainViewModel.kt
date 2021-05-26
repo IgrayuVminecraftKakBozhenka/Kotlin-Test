@@ -11,6 +11,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private var app : Application = application
 
     fun goToTest() {
-        (app as App).router.navigateTo(Screens.Test())
+        (app as App).router.navigateTo(Screens.Regisration())
     }
 }

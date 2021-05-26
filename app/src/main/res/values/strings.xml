@@ -17,4 +17,6 @@
     <string name="no">No</string>
     <string name="test">Test</string>
     <string name="this_is_a_first_question">This is a first question</string>
+    <string name="enter_ur_login">Enter your login</string>
+    <string name="enter_ur_password">Enter your password</string>
 </resources>

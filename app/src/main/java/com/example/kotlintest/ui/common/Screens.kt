@@ -1,4 +1,5 @@
 package com.example.kotlintest.ui.common
+import com.example.kotlintest.ui.RegistrationFragment
 import com.example.kotlintest.ui.main.MainFragment
 import com.example.kotlintest.ui.result.ResultFragment
 import com.example.kotlintest.ui.test.TestFragment
@@ -16,5 +17,9 @@ object Screens {
 
     fun Result(userAnswer: ArrayList<String>) = FragmentScreen {
         ResultFragment.newInstance(userAnswer)
+    }
+
+    fun Regisration() = FragmentScreen {
+        RegistrationFragment()
     }
 }
