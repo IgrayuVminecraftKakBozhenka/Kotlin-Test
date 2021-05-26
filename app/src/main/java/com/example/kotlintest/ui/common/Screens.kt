@@ -14,7 +14,7 @@ object Screens {
         TestFragment()
     }
 
-    fun Result() = FragmentScreen {
-        ResultFragment()
+    fun Result(userAnswer: ArrayList<String>) = FragmentScreen {
+        ResultFragment.newInstance(userAnswer)
     }
 }

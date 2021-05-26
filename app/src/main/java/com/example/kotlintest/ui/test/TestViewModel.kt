@@ -7,6 +7,7 @@ import com.example.kotlintest.App
 import com.example.kotlintest.data.QuestionAndAnswerDatabase
 import com.example.kotlintest.data.models.PageModel
 import com.example.kotlintest.ui.common.Screens
+import com.example.kotlintest.ui.common.USER_ANSWERS
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -52,6 +53,8 @@ class TestViewModel(application: Application) : AndroidViewModel(application) {
         if (pageIndex < pages.size - 1) {
             userAnswers.add(answer)
             page.value = pages[++pageIndex]
+        } else {
+            goToResultFragment()
         }
     }
 
@@ -62,10 +65,8 @@ class TestViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun goToResultFragment() {
-        (app as App).router.sendResult("userAnswers", userAnswers)
-        app.router.navigateTo(Screens.Result())
-
+    private fun goToResultFragment() {
+        (app as App).router.navigateTo(Screens.Result(userAnswers))
     }
 
     fun exit() {

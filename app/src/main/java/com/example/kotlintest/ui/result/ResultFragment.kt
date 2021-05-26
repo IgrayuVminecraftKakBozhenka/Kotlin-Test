@@ -6,17 +6,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
-import android.widget.Toolbar
+import androidx.lifecycle.ViewModelProvider
 import com.example.kotlintest.R
 import com.example.kotlintest.data.QuestionAndAnswerDao
 import com.example.kotlintest.data.QuestionAndAnswerDatabase
-import com.example.kotlintest.fragmentResult
 import com.example.kotlintest.ui.common.BaseFragment
-import com.example.kotlintest.ui.dialog.Dialog
-import kotlinx.coroutines.*
+import com.example.kotlintest.ui.common.USER_ANSWERS
 import java.util.*
+import kotlin.collections.ArrayList
 
 class ResultFragment : BaseFragment() {
 
@@ -28,11 +26,20 @@ class ResultFragment : BaseFragment() {
     private var userAnswers = ArrayList<String>()
     private val correctAnswers = ArrayList<String>()
     private var score = 0
+    private lateinit var viewModel: ResultViewModel
 
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         dao = QuestionAndAnswerDatabase.getDatabase(requireContext().applicationContext).dao()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val userAnswers = arguments?.getStringArrayList(USER_ANSWERS)
+        viewModel = ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
+            .create(ResultViewModel::class.java)
+        viewModel.setUserAnswers(userAnswers!!)
     }
 
     override fun onCreateView(
@@ -46,48 +53,48 @@ class ResultFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val userLevel = view.findViewById<TextView>(R.id.result_fragment_level_text_view)
-        val userScore = view.findViewById<TextView>(R.id.result_fragment_score_text_view)
-        val toStartButton = view.findViewById<Button>(R.id.result_fragment_button_to_main)
-
-        val toolbar = view.findViewById<Toolbar>(R.id.toolbar)
-        toolbar.setTitle(R.string.test)
-        toolbar.setNavigationIcon(R.drawable.back_arrow)
-        toolbar.setNavigationOnClickListener {
-            val dialog = Dialog(fragmentResult)
-            val manager = activity!!.supportFragmentManager
-            dialog.show(manager, "dialog")
-        }
-
-        userAnswers = arguments?.getStringArrayList("result")!!
-        getCorrectAnswerFromDb(userScore, userLevel)
-
-        toStartButton.setOnClickListener {
-            val listener = activity as GoToMain?
-            listener?.goToMain()
-        }
+        //val userLevel = view.findViewById<TextView>(R.id.result_fragment_level_text_view)
+        //val userScore = view.findViewById<TextView>(R.id.result_fragment_score_text_view)
+        //val toStartButton = view.findViewById<Button>(R.id.result_fragment_button_to_main)
+//
+        //val toolbar = view.findViewById<Toolbar>(R.id.toolbar)
+        //toolbar.setTitle(R.string.test)
+        //toolbar.setNavigationIcon(R.drawable.back_arrow)
+        //toolbar.setNavigationOnClickListener {
+        //    val dialog = Dialog(fragmentResult)
+        //    val manager = activity!!.supportFragmentManager
+        //    dialog.show(manager, "dialog")
+        //}
+//
+        //userAnswers = arguments?.getStringArrayList("result")!!
+        //getCorrectAnswerFromDb(userScore, userLevel)
+//
+        //toStartButton.setOnClickListener {
+        //    val listener = activity as GoToMain?
+        //    listener?.goToMain()
+        //}
 
     }
 
     private fun getCorrectAnswerFromDb(userScore: TextView, userLevel: TextView) {
-        GlobalScope.launch {
-            val correctAnswersFromDb = async(Dispatchers.IO) {
-                dao.getCorrectAnswer()
-            }
-            withContext(Dispatchers.Main) {
-                val answersResult = correctAnswersFromDb.await()
-                if (!answersResult.isNullOrEmpty()) {
-                    correctAnswers.addAll(answersResult)
-                    getScore()
-                    userScore.text = score.toString()
-                    when (score) {
-                        in 0..2 -> userLevel.setText(R.string.bad_level)
-                        in 2..4 -> userLevel.setText(R.string.normal_level)
-                        5 -> userLevel.setText(R.string.high_level)
-                    }
-                }
-            }
-        }
+        // GlobalScope.launch {
+        //     val correctAnswersFromDb = async(Dispatchers.IO) {
+        //         dao.getCorrectAnswer()
+        //     }
+        //     withContext(Dispatchers.Main) {
+        //         val answersResult = correctAnswersFromDb.await()
+        //         if (!answersResult.isNullOrEmpty()) {
+        //             correctAnswers.addAll(answersResult)
+        //             getScore()
+        //             userScore.text = score.toString()
+        //             when (score) {
+        //                 in 0..2 -> userLevel.setText(R.string.bad_level)
+        //                 in 2..4 -> userLevel.setText(R.string.normal_level)
+        //                 5 -> userLevel.setText(R.string.high_level)
+        //             }
+        //         }
+        //     }
+        // }
     }
 
     private fun getScore() {
@@ -103,6 +110,16 @@ class ResultFragment : BaseFragment() {
             .remove(this)
             .commit()
         return true
+    }
+
+    companion object {
+
+        fun newInstance(userAnswers: ArrayList<String>): ResultFragment =
+            ResultFragment().apply {
+                arguments = Bundle().apply {
+                    putStringArrayList(USER_ANSWERS, userAnswers)
+                }
+            }
     }
 
 }
