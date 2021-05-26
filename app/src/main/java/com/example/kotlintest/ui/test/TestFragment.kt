@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.lifecycle.ViewModelProvider
 import com.example.kotlintest.R
-import com.example.kotlintest.fragmentTest
+import com.example.kotlintest.ui.common.*
 import com.example.kotlintest.ui.common.BaseFragment
 import com.example.kotlintest.ui.dialog.Dialog
 

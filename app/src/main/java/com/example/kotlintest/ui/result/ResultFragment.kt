@@ -54,7 +54,9 @@ class ResultFragment : BaseFragment() {
             userScore.text = resultPage.score.toString()
         })
 
-
+        toStartButton.setOnClickListener {
+            viewModel.goToStart()
+        }
     }
 
 

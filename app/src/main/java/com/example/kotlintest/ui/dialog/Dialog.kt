@@ -5,9 +5,7 @@ import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import com.example.kotlintest.R
-import com.example.kotlintest.fragmentMain
-import com.example.kotlintest.fragmentResult
-import com.example.kotlintest.fragmentTest
+import com.example.kotlintest.ui.common.*
 
 class Dialog(private val fragmentName: String) : DialogFragment() {
 

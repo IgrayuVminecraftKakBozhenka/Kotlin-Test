@@ -8,7 +8,7 @@ import android.widget.Button
 import android.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import com.example.kotlintest.R
-import com.example.kotlintest.fragmentMain
+import com.example.kotlintest.ui.common.*
 import com.example.kotlintest.ui.common.BaseFragment
 import com.example.kotlintest.ui.dialog.Dialog
 
