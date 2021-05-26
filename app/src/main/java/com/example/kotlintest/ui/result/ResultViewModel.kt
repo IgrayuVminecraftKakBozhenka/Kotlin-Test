@@ -26,15 +26,13 @@ class ResultViewModel(application: Application) : AndroidViewModel(application){
     private var userLevel = ""
     val resultPageModel : MutableLiveData<ResultPageModel> = MutableLiveData()
 
-    init {
-        viewModelScope.launch {
-            correctAnswers.addAll(withContext(Dispatchers.IO) {dao.getCorrectAnswer()})
-        }
-    }
-
     fun setUserAnswers(userAnswersFromView : ArrayList<String>) {
         userAnswers.addAll(userAnswersFromView)
-        getResultPageModel()
+        viewModelScope.launch {
+            val answers = (withContext(Dispatchers.IO) {dao.getCorrectAnswer()})
+            correctAnswers.addAll(answers)
+            getResultPageModel()
+        }
     }
 
     private fun getResultPageModel() {

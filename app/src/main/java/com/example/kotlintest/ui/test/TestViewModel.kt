@@ -54,6 +54,7 @@ class TestViewModel(application: Application) : AndroidViewModel(application) {
             userAnswers.add(answer)
             page.value = pages[++pageIndex]
         } else {
+            userAnswers.add(answer)
             goToResultFragment()
         }
     }
