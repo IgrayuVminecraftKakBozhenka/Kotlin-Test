@@ -1,4 +1,4 @@
-package com.example.kotlintest.ui
+package com.example.kotlintest.ui.registration
 
 import android.os.Bundle
 import android.view.LayoutInflater

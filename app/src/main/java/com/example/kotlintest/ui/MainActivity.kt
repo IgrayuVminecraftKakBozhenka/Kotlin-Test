@@ -42,24 +42,4 @@ class MainActivity : AppCompatActivity() {
         super.onPause()
         (application as App).navigatorHolder.removeNavigator()
     }
-
-
-//    override fun onTestFinished(userAnswers: ArrayList<String>) {
-//        val resultFragment = ResultFragment()
-//        val bundle = Bundle()
-//        bundle.putStringArrayList("result", userAnswers)
-//        resultFragment.arguments = bundle
-//        supportFragmentManager.beginTransaction()
-//            .replace(R.id.container, resultFragment)
-//            .addToBackStack(null)
-//            .commit()
-//    }
-
-//    override fun goToMain() {
-//        val mainFragment = MainFragment()
-//        supportFragmentManager.beginTransaction()
-//            .replace(R.id.container, mainFragment)
-//            .commit()
-//    }
-
 }

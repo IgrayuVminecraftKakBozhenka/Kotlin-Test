@@ -20,9 +20,9 @@ class Dialog(private val fragmentName: String) : DialogFragment() {
                     R.string.yes
                 ) { _, _ ->
                     when(fragmentName) {
-                        fragmentMain -> activity!!.onBackPressed()
-                        fragmentTest -> activity!!.onBackPressed()
-                        fragmentResult -> activity!!.finish()
+                        fragmentMain -> requireActivity().onBackPressed()
+                        fragmentTest -> requireActivity().onBackPressed()
+                        fragmentResult -> requireActivity().finish()
                     }
 
                 }
